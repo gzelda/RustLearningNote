@@ -5,3 +5,5 @@ authors = ["Gavin <tianyao@zju.edu.cn>"]
 edition = "2018"
 
 [dependencies]
+
+rand = "0.3.0"
