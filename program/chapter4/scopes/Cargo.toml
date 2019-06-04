@@ -1,0 +1,7 @@
+[package]
+name = "scopes"
+version = "0.1.0"
+authors = ["Gavin <tianyao@zju.edu.cn>"]
+edition = "2018"
+
+[dependencies]
