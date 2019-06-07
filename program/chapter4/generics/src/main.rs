@@ -3,7 +3,7 @@ trait HasArea{
 }
 
 trait AreaType{
-    fn areaType() -> String;
+    fn area_type() -> String;
 }
 
 struct Circle {
@@ -19,6 +19,11 @@ struct Rectangle {
     y2 : f64
 }
 
+impl Rectangle{
+    fn is_square(&self) -> bool {
+        (self.x1 - self.x2).abs() == (self.y1 - self.y2).abs()
+    }
+}
 
 
 impl HasArea for Circle{
@@ -34,19 +39,25 @@ impl HasArea for Rectangle{
 }
 
 impl AreaType for Circle{
-    fn areaType() -> String{
+    fn area_type() -> String{
         "Circle".to_string()
     }
 }
 
 impl AreaType for Rectangle{
-    fn areaType() -> String{
+    fn area_type() -> String{
         "Rectangle".to_string()
     }
 }
 
-fn print_area< T : HasArea + AreaType>(shape : T){
-    println!("This shape is {} and it has an area of {}",T::areaType(),shape.area());
+fn print_area< T : HasArea + AreaType>( shape : &T){
+    println!("This shape is {} and it has an area of {}",T::area_type(),shape.area());
+    //T::areaType() 关联函数 与T有关，与self无关
+    //shape.area() 对象执行，与self有关
+}
+
+fn print_area2< T > ( shape : &T) where T : HasArea + AreaType {
+    println!("2: This shape is {} and it has an area of {}",T::area_type(),shape.area());
     //T::areaType() 关联函数 与T有关，与self无关
     //shape.area() 对象执行，与self有关
 }
@@ -58,6 +69,13 @@ fn main() {
 
     //println!("{:?}", c.area());
     //println!("{:?}", r.area());
-    print_area(c);
-    print_area(r);
+    
+    print_area(&c);
+    print_area(&r);
+    
+    print_area(&r);
+    //http://ju.outofmemory.cn/entry/108917
+    //using r will cause the error of “use moved value”，we should use borrow of a variable
+    print_area2(&r);
+    assert!(r.is_square());
 }
